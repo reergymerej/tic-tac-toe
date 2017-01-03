@@ -70,19 +70,31 @@ export function getBlocksNeeded(boardState, columns, rows) {
 
   // diagonal
   column = 0
-  while (column < columns - 2) {
+  while (column < columns) {
     row = 0
     while (row < rows - 2) {
       const index = row * columns + column
       const cell = matrix[index]
       if (cell.value === 'x') {
-        const downRightIndex = (row + 1) * columns + column + 1
-        const downRight = matrix[downRightIndex]
-        if (downRight.value === null) {
-          const downRightTwoIndex = (row + 2) * columns + column + 2
-          const downRightTwo = matrix[downRightTwoIndex]
-          if (downRightTwo.value === cell.value) {
-            blocksNeeded.push(downRightIndex)
+        if (column < columns - 1) {
+          const downRightIndex = (row + 1) * columns + column + 1
+          const downRight = matrix[downRightIndex]
+          if (downRight.value === null) {
+            const downRightTwoIndex = (row + 2) * columns + column + 2
+            const downRightTwo = matrix[downRightTwoIndex]
+            if (downRightTwo.value === cell.value) {
+              blocksNeeded.push(downRightIndex)
+            }
+          }
+        } else if (column > 1) {
+          const downLeftIndex = (row + 1) * columns + column - 1
+          const downLeft = matrix[downLeftIndex]
+          if (downLeft.value === null) {
+            const downLeftTwoIndex = (row + 2) * columns + column - 2
+            const downLeftTwo = matrix[downLeftTwoIndex]
+            if (downLeftTwo.value === cell.value) {
+              blocksNeeded.push(downLeftIndex)
+            }
           }
         }
       }
