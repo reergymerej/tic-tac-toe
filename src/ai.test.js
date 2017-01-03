@@ -51,6 +51,12 @@ describe('ai', () => {
         null, null, 'x',
       ]
       expect(ai.getBlocksNeeded(board, columns, rows)).toEqual([4])
+      board = [
+        null, null, 'x',
+        null, null, null,
+        'x', null, null,
+      ]
+      expect(ai.getBlocksNeeded(board, columns, rows)).toEqual([4])
     })
   })
 })

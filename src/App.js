@@ -7,8 +7,8 @@ class App extends Component {
     return (
       <div className="App">
         <Board
-          rows={3}
-          columns={3}
+          rows={7}
+          columns={9}
         />
       </div>
     );

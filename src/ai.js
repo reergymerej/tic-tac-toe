@@ -21,6 +21,9 @@ export function getBlocksNeeded(boardState, columns, rows) {
   const blocksNeeded = []
   const matrix = getMatrix(boardState, columns, rows)
 
+  // This only blocks X-X, not XX-.
+  // TODO: block XX-
+
   // in row
   let row = 0
   while (row < rows) {
@@ -67,23 +70,25 @@ export function getBlocksNeeded(boardState, columns, rows) {
 
   // diagonal
   column = 0
-  row = 0
-  while (column < columns - 2 && row < rows - 2) {
-    const index = row * columns + column
-    const cell = matrix[index]
-    if (cell.value === 'x') {
-      const downRightIndex = (row + 1) * columns + column + 1
-      const downRight = matrix[downRightIndex]
-      if (downRight.value === null) {
-        const downRightTwoIndex = (row + 2) * columns + column + 2
-        const downRightTwo = matrix[downRightTwoIndex]
-        if (downRightTwo.value === cell.value) {
-          blocksNeeded.push(downRightIndex)
+  while (column < columns - 2) {
+    row = 0
+    while (row < rows - 2) {
+      const index = row * columns + column
+      const cell = matrix[index]
+      if (cell.value === 'x') {
+        const downRightIndex = (row + 1) * columns + column + 1
+        const downRight = matrix[downRightIndex]
+        if (downRight.value === null) {
+          const downRightTwoIndex = (row + 2) * columns + column + 2
+          const downRightTwo = matrix[downRightTwoIndex]
+          if (downRightTwo.value === cell.value) {
+            blocksNeeded.push(downRightIndex)
+          }
         }
       }
+      row++
     }
     column++
-    row++
   }
 
   return blocksNeeded
@@ -101,9 +106,9 @@ function getAnyAvailable(boardState) {
 }
 
 export function getAiMove(boardState, columns, rows) {
+  // defense
   const needBlocks = getBlocksNeeded(boardState, columns, rows)
   if (needBlocks.length) {
-    // defense
     return needBlocks[0]
   } else {
     // offense
