@@ -6,7 +6,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Board />
+        <Board
+          rows={3}
+          columns={3}
+        />
       </div>
     );
   }

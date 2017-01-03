@@ -7,22 +7,10 @@ const classes = {
   o: 'o',
 }
 
-function getPosition(top, left, bottom, right) {
-  const y = top
-    ? 'top'
-    : (bottom ? 'bottom' : '')
-  const x = left
-    ? 'left'
-    : (right ? 'right' : '')
-  return `${x} ${y}`
-}
-
 const Box = (props) => {
-  const { top, left, bottom, right } = props
-  const position = getPosition(top, left, bottom, right)
-  const className = `box ${classes[props.type]} ${position}`
+  const className = `box ${classes[props.type]}`
   function handleClick() {
-    props.onClick(props.id)
+    props.onClick && props.onClick(props.id)
   }
   return (
     <div
@@ -34,7 +22,7 @@ const Box = (props) => {
 
 Box.propTypes = {
   type: PropTypes.oneOf(['empty', 'x', 'o']),
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 }
 
 Box.defaultProps = {

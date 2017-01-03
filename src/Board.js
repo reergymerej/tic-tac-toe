@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, {
+  Component,
+  PropTypes,
+} from 'react'
 import './Board.css'
 import Box from './Box'
 
 class Board extends Component {
-  constructor() {
+  constructor(props) {
     super()
-    this.x = 3
-    this.y = 3
     this.state = {
       turn: 'x',
     }
@@ -14,20 +15,21 @@ class Board extends Component {
 
   handleBoxClick = (boxId) => {
     const { turn } = this.state
-    if (this.state[boxId] === undefined) {
-      this.setState({
-        [boxId]: this.state.turn,
-        turn: turn === 'x' ? 'o' : 'x',
-      })
-    }
+    this.setState({
+      [boxId]: turn,
+      turn: turn === 'x' ? 'o' : 'x',
+    })
   }
 
   renderBox = (id) => {
+    const onClick = this.state[id]
+      ? undefined
+      : this.handleBoxClick
     return (
       <Box
         key={id}
         id={id}
-        onClick={this.handleBoxClick}
+        onClick={onClick}
         type={this.state[id]}
       />
     )
@@ -36,7 +38,7 @@ class Board extends Component {
   renderRow = (index) => {
     let blockIndex = 0
     const blocks = []
-    while (blockIndex < this.x) {
+    while (blockIndex < this.props.columns) {
       blocks.push(blockIndex + index)
       blockIndex++
     }
@@ -53,8 +55,8 @@ class Board extends Component {
   render() {
     let rowIndex = 0
     const rows = []
-    while (rowIndex < this.y) {
-      rows.push(rowIndex * this.x)
+    while (rowIndex < this.props.rows) {
+      rows.push(rowIndex * this.props.columns)
       rowIndex++
     }
     return (
@@ -63,6 +65,16 @@ class Board extends Component {
       </div>
     )
   }
+}
+
+Board.propTypes = {
+  columns: PropTypes.number.isRequired,
+  rows: PropTypes.number.isRequired,
+}
+
+Board.defaultProps = {
+  columns: 3,
+  rows: 3,
 }
 
 export default Board
