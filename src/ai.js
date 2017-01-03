@@ -34,6 +34,25 @@ export function getBlocksNeeded(boardState, columns, rows) {
   return blocksNeeded
 }
 
+export function getMatrix(board, columns, rows) {
+  const matrix = []
+  let column = 0
+  let row = 0
+  while (row < rows) {
+    while (column < columns) {
+      matrix.push({
+        x: column,
+        y: row,
+        value: board[row * columns + column],
+      })
+      column++
+    }
+    column = 0
+    row++
+  }
+  return matrix
+}
+
 export function getAiMove(boardState) {
   console.log('What should we do?')
   console.dir(boardState)
