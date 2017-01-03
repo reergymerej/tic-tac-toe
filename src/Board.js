@@ -4,6 +4,9 @@ import React, {
 } from 'react'
 import './Board.css'
 import Box from './Box'
+import { getAiMove } from './ai'
+
+const boardState = []
 
 class Board extends Component {
   constructor(props) {
@@ -11,20 +14,44 @@ class Board extends Component {
     this.state = {
       turn: 'x',
     }
+    const max = props.columns * props.rows
+    while (boardState.length < max) {
+      boardState.push(null)
+    }
+  }
+
+  checkForGameOver = () => {
+    return false
+  }
+
+  aiMove = () => {
+    const delay = 1
+    setTimeout(() => {
+      const ai = getAiMove(boardState)
+      boardState[ai] = 'o'
+      this.setState({
+        turn: 'x',
+        [ai]: 'o',
+      }, this.checkForGameOver)
+    }, delay)
   }
 
   handleBoxClick = (boxId) => {
     const { turn } = this.state
+    boardState[boxId] = 'x'
     this.setState({
       [boxId]: turn,
-      turn: turn === 'x'
-        ? 'o'
-        : 'x',
+      turn: 'o',
+    }, () => {
+      this.checkForGameOver()
+      if (turn === 'x') {
+        this.aiMove()
+      }
     })
   }
 
   renderBox = (id) => {
-    const canClick = this.state.turn === 'x'
+    const canClick = !this.state[id] && this.state.turn === 'x'
     const onClick = canClick
       ? this.handleBoxClick
       : undefined
