@@ -17,20 +17,24 @@ class Board extends Component {
     const { turn } = this.state
     this.setState({
       [boxId]: turn,
-      turn: turn === 'x' ? 'o' : 'x',
+      turn: turn === 'x'
+        ? 'o'
+        : 'x',
     })
   }
 
   renderBox = (id) => {
-    const onClick = this.state[id]
-      ? undefined
-      : this.handleBoxClick
+    const canClick = this.state.turn === 'x'
+    const onClick = canClick
+      ? this.handleBoxClick
+      : undefined
     return (
       <Box
         key={id}
         id={id}
         onClick={onClick}
         type={this.state[id]}
+        canClick={canClick}
       />
     )
   }

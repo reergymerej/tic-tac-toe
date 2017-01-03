@@ -8,20 +8,25 @@ const classes = {
 }
 
 const Box = (props) => {
-  const className = `box ${classes[props.type]}`
+  const clickable = props.canClick ? 'clickable' : ''
+  const className = `box ${classes[props.type]} ${clickable}`
   function handleClick() {
-    props.onClick && props.onClick(props.id)
+    props.onClick(props.id)
   }
+  const onClick = props.canClick
+    ? handleClick
+    : undefined
   return (
     <div
       className={className}
-      onClick={handleClick}
+      onClick={onClick}
     />
   )
 }
 
 Box.propTypes = {
   type: PropTypes.oneOf(['empty', 'x', 'o']),
+  canClick: PropTypes.bool,
   onClick: PropTypes.func,
 }
 

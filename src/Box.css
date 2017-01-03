@@ -5,14 +5,14 @@
   flex: 1;
 }
 
-.empty:hover {
+.clickable:hover {
   border: 1px #ccc solid;
   background-color: #ddd;
   cursor: pointer;
 }
 
 .x {
-  background-color: #ff8383;
+  background-color: #cdb9fd;
 }
 
 .x:before {
