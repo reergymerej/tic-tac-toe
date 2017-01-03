@@ -27,7 +27,7 @@ class Board extends Component {
   aiMove = () => {
     const delay = 1
     setTimeout(() => {
-      const ai = getAiMove(boardState)
+      const ai = getAiMove(boardState, this.props.columns, this.props.rows)
       boardState[ai] = 'o'
       this.setState({
         turn: 'x',

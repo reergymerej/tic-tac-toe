@@ -88,14 +88,25 @@ export function getBlocksNeeded(boardState, columns, rows) {
 
   return blocksNeeded
 }
-export function getAiMove(boardState) {
-  console.log('What should we do?')
-  console.dir(boardState)
-  // Do I need to block?
-  const needBlocks = getBlocksNeeded(boardState)
+
+function getAnyAvailable(boardState) {
+  let pick
+  boardState.some((x, i) => {
+    if (x === null) {
+      pick = i
+    }
+    return pick !== undefined
+  })
+  return pick
+}
+
+export function getAiMove(boardState, columns, rows) {
+  const needBlocks = getBlocksNeeded(boardState, columns, rows)
   if (needBlocks.length) {
+    // defense
     return needBlocks[0]
   } else {
-    return 4
+    // offense
+    return getAnyAvailable(boardState)
   }
 }
