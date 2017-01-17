@@ -1,7 +1,4 @@
 const initialState = {
-  rows: 3,
-  columns: 3,
-  turn: 'x',
 }
 
 const END_TURN = 'END_TURN'
@@ -37,6 +34,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         started: true,
+        turn: 'x',
       }
 
     default:

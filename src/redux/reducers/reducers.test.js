@@ -10,15 +10,6 @@ const getStore = (state = {}) => {
 }
 
 describe('reducers', () => {
-  it('should have the correct initial state', () => {
-    const store = getStore(null)
-    expect(store.getState()).toEqual({
-      rows: 3,
-      columns: 3,
-      turn: 'x',
-    })
-  })
-
   describe('action creators', () => {
     it('should handle END_TURN', () => {
       const store = getStore({
@@ -48,6 +39,7 @@ describe('reducers', () => {
       store.dispatch(actionCreators.startGame())
       expect(store.getState()).toEqual({
         started: true,
+        turn: 'x',
       })
     })
   })
