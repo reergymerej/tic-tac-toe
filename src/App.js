@@ -8,7 +8,7 @@ class App extends Component {
       <div className="App">
         <Board
           rows={5}
-          columns={4}
+          columns={7}
         />
       </div>
     );
