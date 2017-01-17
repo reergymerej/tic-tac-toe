@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 import Board from './Board'
+import { Provider } from 'react-redux'
+import { store } from './redux'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Board
-          rows={5}
-          columns={7}
-        />
-      </div>
-    );
+      <Provider store={store}>
+        <div className="App">
+          <Board />
+        </div>
+      </Provider>
+    )
   }
 }
 

@@ -5,6 +5,7 @@ import React, {
 import './Board.css'
 import Box from './Box'
 import { getAiMove } from './ai'
+import { connect } from 'react-redux'
 
 const boardState = []
 
@@ -103,9 +104,9 @@ Board.propTypes = {
   rows: PropTypes.number.isRequired,
 }
 
-Board.defaultProps = {
-  columns: 3,
-  rows: 3,
-}
+const mapStateToProps = state => ({
+  rows: state.rows,
+  columns: state.columns,
+})
 
-export default Board
+export default connect(mapStateToProps)(Board)
