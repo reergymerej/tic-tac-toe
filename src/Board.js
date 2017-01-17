@@ -6,15 +6,13 @@ import './Board.css'
 import Box from './Box'
 import { getAiMove } from './ai'
 import { connect } from 'react-redux'
-
+import { mapStateToProps } from './redux/reducers'
 const boardState = []
 
 class Board extends Component {
   constructor(props) {
     super()
-    this.state = {
-      turn: 'x',
-    }
+    this.state = {}
     const max = props.columns * props.rows
     while (boardState.length < max) {
       boardState.push(null)
@@ -31,19 +29,19 @@ class Board extends Component {
       const ai = getAiMove(boardState, this.props.columns, this.props.rows)
       boardState[ai] = 'o'
       this.setState({
-        turn: 'x',
         [ai]: 'o',
       }, this.checkForGameOver)
     }, delay)
   }
 
   handleBoxClick = (boxId) => {
-    const { turn } = this.state
+    const { turn } = this.props
     boardState[boxId] = 'x'
+    // TODO: dispatch claiming of a square
     this.setState({
       [boxId]: turn,
-      turn: 'o',
     }, () => {
+      // TODO: Do not use setState callback.
       this.checkForGameOver()
       if (turn === 'x') {
         this.aiMove()
@@ -52,7 +50,7 @@ class Board extends Component {
   }
 
   renderBox = (id) => {
-    const canClick = !this.state[id] && this.state.turn === 'x'
+    const canClick = !this.state[id] && this.props.turn === 'x'
     const onClick = canClick
       ? this.handleBoxClick
       : undefined
@@ -84,7 +82,7 @@ class Board extends Component {
     )
   }
 
-  render() {
+  render = () => {
     let rowIndex = 0
     const rows = []
     while (rowIndex < this.props.rows) {
@@ -93,6 +91,7 @@ class Board extends Component {
     }
     return (
       <div className="board">
+        <div>turn: {this.props.turn}</div>
         { rows.map(this.renderRow) }
       </div>
     )
@@ -102,11 +101,7 @@ class Board extends Component {
 Board.propTypes = {
   columns: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
+  turn: PropTypes.oneOf(['x', 'o']).isRequired,
 }
-
-const mapStateToProps = state => ({
-  rows: state.rows,
-  columns: state.columns,
-})
 
 export default connect(mapStateToProps)(Board)
