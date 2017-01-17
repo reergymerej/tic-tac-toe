@@ -6,6 +6,7 @@ const initialState = {
 
 const END_TURN = 'END_TURN'
 const SELECT_BOARD_SIZE = 'SELECT_BOARD_SIZE'
+const START_GAME = 'START_GAME'
 
 export const actionCreators = {
   endTurn: () => ({ type: END_TURN }),
@@ -14,6 +15,7 @@ export const actionCreators = {
     columns,
     rows,
   }),
+  startGame: () => ({ type: START_GAME }),
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -31,6 +33,12 @@ export default function reducer(state = initialState, action = {}) {
         rows: action.rows,
       }
 
+    case START_GAME:
+      return {
+        ...state,
+        started: true,
+      }
+
     default:
       return state
   }
@@ -40,12 +48,18 @@ export const mapStateToProps = state => ({
   rows: state.rows,
   columns: state.columns,
   turn: state.turn,
+  started: state.started,
 })
 
 export const actions = {
   selectBoardSize: (columns, rows) => {
     return dispatch => {
       dispatch(actionCreators.selectBoardSize(columns, rows))
+      dispatch(actionCreators.startGame())
     }
   },
+}
+
+export const mapDispatchToProps = {
+  selectBoardSize: actions.selectBoardSize,
 }

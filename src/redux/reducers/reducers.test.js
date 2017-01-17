@@ -42,12 +42,26 @@ describe('reducers', () => {
         rows: 3,
       })
     })
+
+    it('should handle START_GAME', () => {
+      const store = getStore()
+      store.dispatch(actionCreators.startGame())
+      expect(store.getState()).toEqual({
+        started: true,
+      })
+    })
   })
 
   describe('actions', () => {
     it('should handle selectBoardSize', () => {
-      const store = getStore()
-      store.dispatch(actions.selectBoardSize(3, 3))
+      const dispatch = jest.fn()
+      actions.selectBoardSize(3, 3)(dispatch)
+      expect(dispatch).toHaveBeenCalledWith(
+        actionCreators.selectBoardSize(3, 3)
+      )
+      expect(dispatch).toHaveBeenLastCalledWith(
+        actionCreators.startGame()
+      )
     })
   })
 })
