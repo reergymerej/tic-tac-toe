@@ -1,9 +1,17 @@
-import reducers, { actions } from './index'
-import { createStore } from 'redux'
+import reducers, { actionCreators, actions } from './index'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+
+const getStore = (state = {}) => {
+  if (state) {
+    return createStore(reducers, state, applyMiddleware(thunk))
+  }
+  return createStore(reducers, applyMiddleware(thunk))
+}
 
 describe('reducers', () => {
   it('should have the correct initial state', () => {
-    const store = createStore(reducers)
+    const store = getStore(null)
     expect(store.getState()).toEqual({
       rows: 3,
       columns: 3,
@@ -11,17 +19,35 @@ describe('reducers', () => {
     })
   })
 
-  it('should handle END_TURN', () => {
-    const store = createStore(reducers, {
-      turn: 'x',
+  describe('action creators', () => {
+    it('should handle END_TURN', () => {
+      const store = getStore({
+        turn: 'x',
+      })
+      store.dispatch(actionCreators.endTurn())
+      expect(store.getState()).toEqual({
+        turn: 'o',
+      })
+      store.dispatch(actionCreators.endTurn())
+      expect(store.getState()).toEqual({
+        turn: 'x',
+      })
     })
-    store.dispatch(actions.endTurn())
-    expect(store.getState()).toEqual({
-      turn: 'o',
+
+    it('should handle SELECT_BOARD_SIZE', () => {
+      const store = getStore()
+      store.dispatch(actionCreators.selectBoardSize(3, 3))
+      expect(store.getState()).toEqual({
+        columns: 3,
+        rows: 3,
+      })
     })
-    store.dispatch(actions.endTurn())
-    expect(store.getState()).toEqual({
-      turn: 'x',
+  })
+
+  describe('actions', () => {
+    it('should handle selectBoardSize', () => {
+      const store = getStore()
+      store.dispatch(actions.selectBoardSize(3, 3))
     })
   })
 })
